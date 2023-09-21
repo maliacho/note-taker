@@ -1,3 +1,6 @@
+const app = require('express').Router();
+
+
 // API Routes
 // GET request for notes
 app.get('/api/notes', (req, res) =>
@@ -9,3 +12,6 @@ app.get('/api/notes', (req, res) =>
 app.post('/api/notes', (req, res) =>
     
 );
+
+
+module.exports = app;
