@@ -1,13 +1,13 @@
-const express = require('express');
+// Imports necessary files
+const apiRoutes = require('./apiRoutes');
+const htmlRoutes = require('./htmlRoutes');
 
-const app = express();
+// Mounting our routes as middleware using the Router class convention
+const app = require('express').Router();
+
+app.use('/', htmlRoutes);
+app.use('/api', apiRoutes);
+
+module.exports = app; 
 
 
-
-
-const fs = require('fs');
-const path = require('path')
-// Helper method for generating unique ids
-const uuid = require('./helpers/uuid');
-const userData = require('./db/db.json');
-const exp = require('constants');
