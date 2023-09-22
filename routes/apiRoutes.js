@@ -1,7 +1,7 @@
 const app = require('express').Router();
-const uuid = require('./helpers/uuid');
-const userData = require('./db/db.json');
-const { readFromFile, readAndAppend } = require('../../helpers/fsHelpers');
+const uuid = require('../helpers/uuid');
+const userData = require('../db/db.json');
+const { readFromFile, readAndAppend } = require('../helpers/fsHelpers');
 
 
 // API Routes
@@ -26,7 +26,7 @@ if (req.body) {
         note_id: uuid(),
     };
 
-    readAndAppend(newNote, './db/db.json');
+    readAndAppend(newNote, '../db/db.json');
     res.json(`Note added successfully.`);
 } else {
     res.error('Error in adding note.');
