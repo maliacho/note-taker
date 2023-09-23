@@ -6,10 +6,17 @@ const { readFromFile, readAndAppend } = require('../helpers/fsHelpers');
 // API Routes
 // GET request for notes
 app.get('/notes', (req, res) => {
-    res.status(200).json(`${req.method} recieved to view notes.`),
-        console.info(`${req.method} recieved to view notes.`),
+    console.info(`${req.method} received to view notes.`);
 
-    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
+    readFromFile('./db/db.json')
+        .then((data) => {
+            const notes = JSON.parse(data);
+            res.status(200).json(notes);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Server error');
+        });
 });
 
 // POST request to add a note
@@ -19,21 +26,27 @@ app.post('/notes', (req, res) => {
 
     const { title, text } = req.body;
 
-    if ( title && text ) {
+    if (title && text) {
         const newNote = {
             title,
             text,
             note_id: uuid(),
         };
 
-        readAndAppend(newNote, './db/db.json');
-        const response = {
-            status: 'success',
-            body: newNote,
-        };
-        res.json(response);
+        readAndAppend(newNote, './db/db.json')
+            .then(() => {
+                const response = {
+                    status: 'success',
+                    body: newNote,
+                };
+                res.status(201).json(response);
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Server error');
+            });
     } else {
-        res.status(400).send(`Error in posting note.`).
+        res.status(400).send('Error in posting note.');
     }
 });
 
