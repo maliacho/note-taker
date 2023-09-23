@@ -1,6 +1,6 @@
 const app = require('express').Router();
 const uuid = require('../helpers/uuid');
-const { readFromFile, readAndAppend, writeToFile } = require('../helpers/fsHelpers');
+const { readFromFile, readAndAppend } = require('../helpers/fsHelpers');
 
 
 // API Routes
@@ -27,9 +27,13 @@ app.post('/notes', (req, res) => {
         };
 
         readAndAppend(newNote, './db/db.json');
-        res.json(`Note added successfully.`);
+        const response = {
+            status: 'success',
+            body: newNote,
+        };
+        res.json(response);
     } else {
-        res.error('Error in adding note.');
+        res.status(400).send(`Error in posting note.`).
     }
 });
 
